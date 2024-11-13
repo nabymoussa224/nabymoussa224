@@ -1,0 +1,191 @@
+- 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIMBA VISIT</title>
+    <link rel="stylesheet" href="style.css"> <!-- Fichier CSS -->
+</head>
+<body>
+
+    <!-- En-tête -->
+    <header>
+        <div class="container">
+            <img src="image/image2.png" alt="logo du site" class="logo">
+            <h1>NIMBA VISIT</h1>
+            <nav>
+                <a href="#">Accueil</a>
+                <a href="#">À propos</a>
+                <a href="#">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Section de la carte de géolocalisation -->
+    <section class="maps">
+        <div class="container">
+            <h2>Carte de localisation</h2>
+            <a href="https://www.google.com/maps/place/Conakry,+Guinea" target="_blank">
+                <img src="image/image11.png" alt="Carte de Conakry" class="map-image">
+            </a>
+            <p>Cliquez sur la carte pour ouvrir Google Maps.</p>    
+        </div>
+    </section>
+    
+    <!-- Section de recherche -->
+    <section class="search">
+        <div class="container">
+            <h2>Recherchez votre hébergement</h2>
+            <form id="search-form">
+        <label for="destination">Ville :</label>
+        <input type="text" id="destination" name="destination" placeholder="Entrez une ville...">
+            </form>
+                <label for="category">Catégorie :</label>
+                <select id="category" name="category">
+                    <option value="hotel&appartement">Hébergement</option>
+                    <option value="deplacement">Déplacement</option>
+                    <option value="detente_loisirs">Détente et loisirs</option>
+                    <option value="restaurant">Restaurants</option>
+                    <option value="tourisme">Tourisme</option>
+                </select>
+
+                <label for="guests">Nombre de personnes :</label>
+                <input type="number" id="guests" name="guests" min="1" value="1">
+                 
+                <div class="date-container">
+    <label for="date_debut">Dates de séjour :</label>
+    <div class="date-inputs">
+        <input type="text" id="date_debut" name="date_debut" placeholder="JJ/MM/AAAA" maxlength="10" required oninput="formatDate(this)" onkeydown="allowBackspace(event, this)">
+        <span>→</span>
+        <input type="text" id="date_fin" name="date_fin" placeholder="JJ/MM/AAAA" maxlength="10" required oninput="formatDate(this)" onkeydown="allowBackspace(event, this)">
+    </div>
+</div>
+
+<script>
+    function formatDate(input) {
+        let value = input.value.replace(/\D/g, ""); // Supprime tous les caractères non numériques
+        if (value.length >= 2) {
+            value = value.slice(0, 2) + "/" + value.slice(2);
+        }
+        if (value.length >= 5) {
+            value = value.slice(0, 5) + "/" + value.slice(5);
+        }
+        input.value = value.slice(0, 10); // Limite la saisie à 10 caractères (JJ/MM/AAAA)
+    }
+
+    // Permet d'utiliser correctement la touche backspace pour supprimer les parties séparées
+    function allowBackspace(event, input) {
+        if (event.key === 'Backspace') {
+            let value = input.value;
+            if (value.length === 3 || value.length === 6) {
+                input.value = value.slice(0, -1); // Supprimer un seul caractère au lieu d'un séparateur
+            }
+        }
+    }
+</script>                </div>
+
+                <button type="button" onclick="searchAccommodation()">Rechercher</button>
+            </form>
+        </div>
+    </section>
+    
+    <!-- Script JavaScript pour gérer la redirection par catégories et villes -->
+    <script>
+        const citiesInGuinea = [
+            "Conakry", "Labé", "Kankan", "Kindia", "Boké", "Mamou", "Nzérékoré", "Faranah", "Kouroussa", "Dinguiraye", 
+            "Beyla", "Siguiri", "Macenta", "Dubréka", "Kérouané", "Pita", "Dalaba", "Tougué", "Koubia", "Gaoual"
+        ];
+
+        function filterDestinations() {
+            const input = document.getElementById('destination').value.toLowerCase();
+            const datalist = document.getElementById('destinations');
+            datalist.innerHTML = ''; 
+
+            const filteredCities = citiesInGuinea.filter(city => city.toLowerCase().startsWith(input));
+
+            filteredCities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                datalist.appendChild(option);
+            });
+        }
+
+        function searchAccommodation() {
+            const destination = document.getElementById('destination').value.toLowerCase();
+            const category = document.getElementById('category').value;
+            const guests = document.getElementById('guests').value;
+
+            if (!destination || !category || !guests) {
+                alert("Veuillez remplir tous les champs.");
+                return;
+            }
+
+            let redirectUrl = category + ".html?ville=" + encodeURIComponent(destination) + "&guests=" + guests;
+
+            window.location.href = redirectUrl;
+            }
+         </script>
+
+    <!-- Section des catégories -->
+    <section class="categories">
+        <div class="container">
+            <h2>Explorez Nos Catégories</h2>
+            <div class="category-list">
+                <!-- Hébergement -->
+                <div class="category-item">
+                    <img src="image/image4.jpeg" alt="Hébergement" class="category-image">
+                    <h3>Hébergement</h3>
+                    <p>Explorez des hôtels, appartements et autres options pour séjourner confortablement.</p>
+                    <button onclick="window.location.href='hotel&appartement.html'" class="explore-button">Découvrez</button>
+                </div>
+
+                <!-- Déplacement -->
+                <div class="category-item">
+                    <img src="image/image12.jpeg" alt="Déplacement" class="category-image">
+                    <h3>Déplacement</h3>
+                    <p>Explorez des moyens de déplacement et autres options.</p>
+                    <button onclick="window.location.href='location des moyens de déplacement.html'" class="explore-button">Découvrez</button>
+                </div>
+
+                <!-- Détente et loisirs -->
+                <div class="category-item">
+                    <img src="image/image13.jpeg" alt="Détente et loisirs" class="category-image">
+                    <h3>Détente et loisirs</h3>
+                    <p>Explorez des moyens de détente et loisirs pour passer un séjour agréable.</p>
+                    <button onclick="window.location.href='Détente et loisirs.html'" class="explore-button">Découvrez</button>
+                </div>
+
+                <!-- Restaurants -->
+                <div class="category-item">
+                    <img src="image/image4.jpeg" alt="Restaurants" class="category-image">
+                    <h3>Restaurants</h3>
+                    <p>Découvrez des plats gastronomiques et traditionnels pour un séjour mémorable.</p>
+                    <button onclick="window.location.href='Restaurants.html'" class="explore-button">Découvrez</button>
+                </div>
+
+                <!-- Tourisme -->
+                <div class="category-item">
+                    <img src="image/image4.jpeg" alt="Tourisme" class="category-image">
+                    <h3>Tourisme</h3>
+                    <p>Explorez les sites touristiques nationaux pour enrichir votre séjour.</p>
+                    <button onclick="window.location.href='Tourisme.html'" class="explore-button">Découvrez</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pied de page -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 NIMBA VISIT. Tous droits réservés.</p>
+            <nav>
+                <a href="#">Mentions légales</a>
+                <a href="#">Politique de confidentialité</a>
+                <a href="#">Conditions générales</a>
+            </nav>
+        </div>
+    </footer>
+
+</body>
+</html>
